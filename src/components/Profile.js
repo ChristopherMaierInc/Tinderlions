@@ -6,24 +6,36 @@ class Profile extends Component {
   state = {
     user: null
   }
+
   getNextUser = () => {
-    fetch('https://randomuser.me/api/?gender=male')
+    fetch('https://randomuser.me/api/?gender=female')
     .then((response) => {
       return response.json()
     })
     .then(users => {
-      users.results[0].name.first
+      this.setState({
+        user: users.results[0]
+      })
     })
   }
 
   render() {
+    const { user } = this.state
     return (
       <div>
-        <p>Profile!</p><br />
-
-        <Button primary>Next</Button>
-      </div>
+        { !user ? (<p>Loading...</p>) : (
+          <div>
+            <p>{ user.name.first }</p><br />
+            <Button primary>Next</Button>
+          </div>
+          )
+        }
+        </div>
     );
+  }
+
+  componentDidMount() {
+    this.getNextUser()
   }
 }
 
